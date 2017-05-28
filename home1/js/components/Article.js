@@ -33,7 +33,7 @@ class Article extends Component{
 		return(
 			<div>
 				<h3 onClick={toggleOpen} className="arcticle-title">{article.title}</h3>
-				<button onClick={this.deleteArticle}>Remove</button>
+				<button onClick={this.deleteArticle} className="btn-delete">Remove</button>
 				<div>
 					{this.showText(isOpen)}
 				</div>

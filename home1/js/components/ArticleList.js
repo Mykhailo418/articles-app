@@ -6,14 +6,14 @@ import {connect} from 'react-redux';
 
 function ArticleList({articles,toggleItem,isItemOpened}){
 	let elements = articles.map(
-			article => <li key={article.id} >
+			article => <li key={article.id} className="article" >
 				<Article article={article} 
 				toggleOpen={toggleItem(article.id)} 
 				isOpen={isItemOpened(article.id)} />
 			</li>
 		);
 	return (
-		<ul>
+		<ul className="articles">
 			{elements}
 		</ul>
 	);

@@ -1,0 +1,20 @@
+.btn-delete{
+	background: #F44336;
+    color: white;
+    padding: 5px 20px;
+    border: 1px solid #b3b3b3;
+    &:hover{
+   		cursor: pointer;
+   	}
+}
+
+.btn-counter{
+  	background: #8BC34A;
+   	border: 1px solid #aaa8a8;
+   	font-size: 1.2em;
+   	color: white;
+   	padding: 5px 20px;
+   	&:hover{
+   		cursor: pointer;
+   	}
+}

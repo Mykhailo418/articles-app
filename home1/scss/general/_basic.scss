@@ -1,3 +1,8 @@
 .arcticle-title:hover{
 	cursor: pointer;
 }
+.col-sm-6{
+	@media(min-width: $bp-sm){
+		width: 50%;
+	}
+}

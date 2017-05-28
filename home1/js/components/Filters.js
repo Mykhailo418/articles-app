@@ -7,8 +7,12 @@ class Filters extends Component{
 	render(){
 		return(
 			<div className="div-filters">
-				<SelectField />
-				<DateRange />
+				<div className="col-sm-6">
+					<SelectField />
+				</div>
+				<div className="col-sm-6">
+					<DateRange />
+				</div>
 			</div>
 		);
 	}

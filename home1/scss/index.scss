@@ -1,7 +1,10 @@
 // general
+@import "general/app-vars";
 @import "general/basic";
+@import "general/btns";
 
 // components
 @import "components/commentForm";
 @import "components/filters";
 @import "components/counter";
+@import "components/articles";
