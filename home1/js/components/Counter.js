@@ -13,6 +13,7 @@ class Counter extends Component{
 
 		return(
 			<div className="counter">
+				<h2>Counter Clicker:</h2>
 				<h3>{this.props.count}</h3>
 				<button onClick={this.handleIncrement} className="btn-counter">+1</button>
 			</div>
@@ -27,7 +28,7 @@ class Counter extends Component{
 }
 
 function mapSateToProps(storeState){
-	return{
+	return {
 		count: storeState.counter
 	}
 }

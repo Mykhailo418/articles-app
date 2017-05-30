@@ -1,5 +1,4 @@
-import {INCREMENT} from '../constants.js';
-import {DELETE_ART} from '../constants.js';
+import {INCREMENT,ADD_FILTETRS,DELETE_ART} from '../constants.js';
 
 export function increment(){
 	const action = {
@@ -14,6 +13,18 @@ export function delete_article(id){
 		payload: {
 			id: id
 		}
+	};
+	return action;
+}
+
+export function add_filters(obj){
+	const action = {
+		type: ADD_FILTETRS,
+		payload: {
+			dateRange: obj.dateRange,
+			exclude: obj.exclude			
+		}
+
 	};
 	return action;
 }

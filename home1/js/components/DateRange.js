@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import DayPicker, { DateUtils } from "react-day-picker";
 
 // Styles
@@ -9,25 +10,25 @@ class DateRange extends Component{
 		super();
 	}
 
-	state = {
-		from: null,
-    	to: null,
+	static propTypes = {
+		date: PropTypes.object.isRequired,
+		handleFilter: PropTypes.func.isRequired,
 	}
 
 	render(){
-		const { from, to } = this.state;
+		const { from, to } = this.props.date;
 		return (
 			<DayPicker
 				numberOfMonths={1}
           		selectedDays={[from, { from, to }]}
-				onDayClick={this.handleDayClick}
+				onDayClick={this.props.handleFilter('date')}
 			/>
 		);
 	}
 
 	handleDayClick = (day) => {
-	    const range = DateUtils.addDayToRange(day, this.state);
-    	this.setState(range);
+		const range = DateUtils.addDayToRange(day, this.state);
+		this.props.handleFilter('date',range);
 	};
 }
 
