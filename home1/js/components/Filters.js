@@ -19,6 +19,15 @@ class Filters extends Component{
 			to: null
 		}
 	}
+	componentDidUpdate(props,states){
+		console.log('Filters - componentDidUpdate');
+		let {add_filters} = this.props;
+		add_filters({
+			dateRange: this.state.date,
+			exclude: this.state.selected
+		});
+	}
+
 	render(){
 		return(
 			<div className="div-filters">
