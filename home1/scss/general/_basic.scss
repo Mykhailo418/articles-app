@@ -1,7 +1,8 @@
 .arcticle-title:hover{
 	cursor: pointer;
 }
-.col-sm-6{    
+.col-sm-6{
+    vertical-align: top;
 	@media(min-width: $bp-sm){
 		display: inline-block;
 		width: 50%;

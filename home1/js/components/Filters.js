@@ -12,50 +12,41 @@ class Filters extends Component{
 		this.handleFilters = this.handleFilters.bind(this);
 	}
 
-	state = {
-		selected: null,
-		date: {
-			from: null,
-			to: null
-		}
-	}
-	componentDidUpdate(props,states){
-		console.log('Filters - componentDidUpdate');
-		let {add_filters} = this.props;
-		add_filters({
-			dateRange: this.state.date,
-			exclude: this.state.selected
-		});
-	}
-
 	render(){
+		let {filters} = this.props;
 		return(
 			<div className="div-filters">
 				<div className="col-sm-6">
-					<SelectField handleFilter={this.handleFilters} selected={this.state.selected} />
+					<label>Exclude Articles:</label>
+					<SelectField handleFilter={this.handleFilters} selected={filters.exclude} />
 				</div>
 				<div className="col-sm-6">
-					<DateRange handleFilter={this.handleFilters} date={this.state.date} />
+					<label>Date Range:</label>
+					<DateRange handleFilter={this.handleFilters} date={filters.dateRange} />
 				</div>
 			</div>
 		);
 	}
 
 	handleFilters = type => value =>{
+		let {filters,add_filters} = this.props;
 		switch(type){
 			case 'selected':
-				this.setState({
-					'selected' : value
-				})
+				add_filters({ ...filters,
+					exclude: value.map(option => option.value)
+				});
 			break;
 			case 'date':
-				const range = DateUtils.addDayToRange(value, this.state.date);
-				this.setState({
-					'date' : range
-				})
+				const range = DateUtils.addDayToRange(value, filters.dateRange);
+				add_filters({
+					...filters,
+					dateRange: range,
+				});
 			break;
 		}
 	}
 }
 
-export default connect(null,{add_filters})(Filters);
+export default connect(stateStore => ({
+	filters: stateStore.filters
+}),{add_filters})(Filters);

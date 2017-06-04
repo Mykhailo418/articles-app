@@ -5,16 +5,13 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 
 function ArticleList({articles,toggleItem,isItemOpened,filters}){
-	console.log(filters);
 	let elements = articles.map(
 			article => {
-				if(check_article_by_filer(article,filters)){	
-					return (<li key={article.id} className="article" >
-						<Article article={article} 
+				return (<li key={article.id} className="article" >
+					<Article article={article} 
 						toggleOpen={toggleItem(article.id)} 
 						isOpen={isItemOpened(article.id)} />
-					</li>);
-				}
+				</li>);
 			}
 		);
 	return (
@@ -32,7 +29,9 @@ ArticleList.propTypes = {
 
 function mapSateToProps(storeState){
 	return{
-		articles: storeState.articles,
+		articles: storeState.articles.filter(article => {
+			return check_article_by_filer(article,storeState.filters);
+		}),
 		filters: storeState.filters
 	}
 }
@@ -42,7 +41,7 @@ function check_article_by_filer(article,filters){
 	if(article && filters){
 		if (filters.exclude && filters.exclude.length) {
 			for(var k in filters.exclude){
-				if(filters.exclude[k].value == article.id){
+				if(filters.exclude[k] == article.id){
 					check = false;
 				}
 			}

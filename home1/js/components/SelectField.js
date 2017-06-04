@@ -35,9 +35,7 @@ class SelectField extends Component{
 	}
 
 	logChange = selected => {
-		console.log('selected',selected);
 		let {handleFilter} = this.props;
-		//console.log(handleFilter);
 	 	handleFilter('selected',selected);
 	}
 }
