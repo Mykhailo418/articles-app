@@ -24,7 +24,7 @@ function ArticleList({articles,toggleItem,isItemOpened,filters}){
 }
 
 ArticleList.propTypes = {
-	'articles': PropTypes.array.isRequired,
+	articles: PropTypes.array.isRequired,
 	toggleItem: PropTypes.func,
 	isItemOpened: PropTypes.func,
 }

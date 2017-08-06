@@ -28,7 +28,7 @@ function commentsShow(isOpen,comments){
 			);
 		}
 		let comments_output = comments.map(
-			comment => <li key={comment.id}><Comment comment={comment} /></li>
+			id => <li key={id} id={id}><Comment id={id} /></li>
 		);
 		return (
 			<div>

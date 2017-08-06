@@ -1,7 +1,9 @@
 import {createSelector} from 'reselect';
 
-const articlesGetter = state => state.articles;
-const filtersGetter = state => state.filters;
+export const articlesGetter = state => state.articles;
+export const filtersGetter = state => state.filters;
+export const commentsGetter = state => state.comments;
+export const idGetter = (state,props) => props.id;
 
 export const filtratedArticlesSelector = createSelector(articlesGetter, filtersGetter, (articles,filters) => {
 	return articles.filter(article => {
@@ -33,4 +35,13 @@ export const filtratedArticlesSelector = createSelector(articlesGetter, filtersG
 		}
 		return check;
 	});
+});
+
+export const commentsSelectorFactory = () => createSelector(commentsGetter, idGetter, (comments,id) => {
+	console.log('-- Comments Selector Factory');
+	if(id || id == 0){
+		return comments[id];
+	}else{
+		return comments;
+	}
 });
