@@ -1,4 +1,4 @@
-import {INCREMENT,ADD_FILTETRS,DELETE_ART} from '../constants.js';
+import {INCREMENT,ADD_FILTETRS,DELETE_ART,RUN_LOGGER,ADD_COMMENT} from '../constants.js';
 
 export function increment(){
 	const action = {
@@ -25,6 +25,25 @@ export function add_filters(obj){
 			exclude: obj.exclude			
 		}
 
+	};
+	return action;
+}
+
+export function run_logger(obj){
+	const action = {
+		type: RUN_LOGGER,
+	};
+	return action;
+}
+
+export function add_comment(comment,articleId){
+	const action = {
+		type: ADD_COMMENT,
+		payload: {
+			comment,
+			articleId
+		},
+		random_id: true	
 	};
 	return action;
 }

@@ -6,19 +6,20 @@ export const commentsGetter = state => state.comments;
 export const idGetter = (state,props) => props.id;
 
 export const filtratedArticlesSelector = createSelector(articlesGetter, filtersGetter, (articles,filters) => {
-	return articles.filter(article => {
+	var results = [];
+	for(var k in articles){
 		var check = true;
-		if(article && filters){
+		if(articles[k] && filters){
 			if (filters.exclude && filters.exclude.length) {
-				for(var k in filters.exclude){
-					if(filters.exclude[k] == article.id){
+				for(var key in filters.exclude){
+					if(filters.exclude[key] == k){
 						check = false;
 					}
 				}
 			}
 			if (filters.dateRange) {
 				let {from,to} = filters.dateRange;
-				var date_article = new Date(article.date);
+				var date_article = new Date(articles[k].date);
 				if(from){
 					var date_from = new Date(from);
 					if (date_article.getTime() < date_from.getTime()) {
@@ -33,8 +34,12 @@ export const filtratedArticlesSelector = createSelector(articlesGetter, filtersG
 				}
 			}
 		}
-		return check;
-	});
+		if(check){
+			results.push(articles[k]);
+		}
+	}
+
+	return results;
 });
 
 export const commentsSelectorFactory = () => createSelector(commentsGetter, idGetter, (comments,id) => {

@@ -6,16 +6,18 @@ import {connect} from 'react-redux';
 import {filtratedArticlesSelector} from '../selectors/index.js';
 
 function ArticleList({articles,toggleItem,isItemOpened,filters}){
-	let elements = articles.map(
-			article => {
-				return (<li key={article.id} className="article" >
-					<Article article={article} 
-						toggleOpen={toggleItem(article.id)} 
-						isOpen={isItemOpened(article.id)} />
-				</li>);
-			}
+	let elements = [];
+	for(var k in articles){
+		elements.push(
+			<li key={articles[k].id} className="article" >
+				<Article article={articles[k]} 
+					toggleOpen={toggleItem(articles[k].id)} 
+					isOpen={isItemOpened(articles[k].id)} />
+			</li>
 		);
-		console.log('render Articles');
+	}
+
+	console.log('render Articles');
 	return (
 		<ul className="articles">
 			{elements}
@@ -30,6 +32,7 @@ ArticleList.propTypes = {
 }
 
 function mapSateToProps(storeState){
+	console.log('mapSateToProps - ArticleList');
 	return{
 		articles: filtratedArticlesSelector(storeState),
 		filters: storeState.filters

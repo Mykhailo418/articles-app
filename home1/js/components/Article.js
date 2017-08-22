@@ -20,7 +20,7 @@ class Article extends Component{
 	}
 
 	shouldComponentUpdate(nextProps,NextState){
-		return nextProps.isOpen != this.props.isOpen;
+		return nextProps.isOpen != this.props.isOpen || nextProps.article.comments != this.props.article.comments;
 	}
 
 	componentDidUpdate(){
@@ -29,7 +29,7 @@ class Article extends Component{
 
 	render(){
 		let {article,toggleOpen,isOpen} = this.props;
-
+		console.log('Article - render');
 		return(
 			<div>
 				<h3 onClick={toggleOpen} className="arcticle-title">{article.title}</h3>
@@ -47,7 +47,9 @@ class Article extends Component{
 	}
 
 	showComments(){
-		return this.props.isOpen && <CommentList comments={this.props.article.comments} />;
+		let {id} = this.props.article;
+		console.log('Article - showComments',this.props.article.comments);
+		return this.props.isOpen && <CommentList articleId={id} comments={this.props.article.comments} />;
 	}
 
 	deleteArticle = e =>{

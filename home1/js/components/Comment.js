@@ -30,6 +30,7 @@ Comment.propTypes = {
 }
 
 function createMapSateToProps(storeState,ownProps){
+	console.log('--','Comments js - createMapSateToProps');
 	const commentSelector = commentsSelectorFactory();
 	return function mapSateToProps(storeState,ownProps){
 		return{

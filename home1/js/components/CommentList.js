@@ -4,7 +4,7 @@ import CommentForm from './CommentForm/index';
 import ToggleOpen from '../decoratores/toggleOpen';
 import PropTypes from 'prop-types';
 
-function CommentList({isOpen,toggleOpen,comments}){
+function CommentList({isOpen,toggleOpen,comments,articleId}){
 	let show_title = 'show comments';
 	if(isOpen){
 		show_title = 'hide comments';
@@ -12,18 +12,19 @@ function CommentList({isOpen,toggleOpen,comments}){
 	return (
 		<div className="comments-wrap">
 			<a href="#" className="show-comments-link" onClick={toggleOpen}>{show_title}</a>
-			{commentsShow(isOpen,comments)}
+			{commentsShow(isOpen,comments,articleId)}
 		</div>
 	);
 }
 
-function commentsShow(isOpen,comments){
+function commentsShow(isOpen,comments,articleId){
 	if(isOpen){
+
 		if(!comments || !comments.length){
 			return (
 				<div>
 					<p>No comments yet</p>
-					<CommentForm />
+					<CommentForm articleId={articleId} />
 				</div>
 			);
 		}
@@ -33,7 +34,7 @@ function commentsShow(isOpen,comments){
 		return (
 			<div>
 				<ul className="comments">{comments_output}</ul>
-				<CommentForm />
+				<CommentForm articleId={articleId} />
 			</div>
 		);
 	}else{

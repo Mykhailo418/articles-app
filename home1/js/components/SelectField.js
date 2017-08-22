@@ -10,19 +10,18 @@ class SelectField extends Component{
 
 	static propTypes = {
 		handleFilter: PropTypes.func.isRequired,
-		articles: PropTypes.array
+		articles: PropTypes.object
 	}
 
 	render(){
 		const {articles,selected} = this.props;
-		let options = articles.map(
-			article => {
-				return {
-					value: article.id,
-					label: article.title
-				};
-			}
-		);
+		let options =[];
+		for(var k in articles){
+			options.push({
+				value: k,
+				label: articles[k].title
+			});
+		}
 		return(
 			<Select
 			  name="article-filter"

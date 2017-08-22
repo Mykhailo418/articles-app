@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
+import {add_comment} from '../../AC/index';
 
 class CommentForm extends Component{
 	constructor(){
@@ -62,13 +64,19 @@ class CommentForm extends Component{
 
 	submitForm = e =>{
 		e.preventDefault();
+		var add_comment = this.props.add_comment;
+		let {articleId} = this.props;
 		if(this.state.name.length < 10 || this.state.msg.length < 10){
 			console.log('Error!');
 		}else{
+			add_comment({
+				user: this.state.name,
+				text: this.state.msg
+			},articleId);
 			console.log(this.state.name,this.state.msg);
 		}
 	}
 
 }
 
-export default CommentForm;
+export default connect(null,{add_comment})(CommentForm);
