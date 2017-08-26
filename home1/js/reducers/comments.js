@@ -9,13 +9,17 @@ export default (comments = sortArrayToId(defaultComments), action) => {
 			const {random_id} = action;
 			if(random_id){
 				console.log(payload.comment);
-				return {
+				return comments.set(random_id,{
+						...payload.comment,
+						id: random_id,
+					});
+				/*return {
 					...comments,
 					[random_id] : {
 						...payload.comment,
 						id: random_id,
 					}
-				};
+				};*/
 			}
 		break;
 	}

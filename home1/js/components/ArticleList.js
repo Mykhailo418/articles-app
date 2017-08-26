@@ -4,18 +4,19 @@ import Accordion from '../decoratores/accordion';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {filtratedArticlesSelector} from '../selectors/index.js';
+import {mapToArr} from '../utils';
+
 
 function ArticleList({articles,toggleItem,isItemOpened,filters}){
-	let elements = [];
-	for(var k in articles){
-		elements.push(
-			<li key={articles[k].id} className="article" >
-				<Article article={articles[k]} 
-					toggleOpen={toggleItem(articles[k].id)} 
-					isOpen={isItemOpened(articles[k].id)} />
+	let elements = mapToArr( articles.map(article => {
+		return(
+			<li key={article.id} className="article" >
+				<Article article={article} 
+					toggleOpen={toggleItem(article.id)} 
+					isOpen={isItemOpened(article.id)} />
 			</li>
 		);
-	}
+	}) );
 
 	console.log('render Articles');
 	return (
@@ -26,7 +27,7 @@ function ArticleList({articles,toggleItem,isItemOpened,filters}){
 }
 
 ArticleList.propTypes = {
-	articles: PropTypes.array.isRequired,
+	articles: PropTypes.object.isRequired,
 	toggleItem: PropTypes.func,
 	isItemOpened: PropTypes.func,
 }

@@ -3,6 +3,7 @@ import DayPicker, { DateUtils } from "react-day-picker";
 import PropTypes from 'prop-types';
 import Select from 'react-select';
 import {connect} from 'react-redux';
+import {mapToArr} from '../utils';
 
 import 'react-select/dist/react-select.css';
 
@@ -15,13 +16,10 @@ class SelectField extends Component{
 
 	render(){
 		const {articles,selected} = this.props;
-		let options =[];
-		for(var k in articles){
-			options.push({
-				value: k,
-				label: articles[k].title
-			});
-		}
+		let options = mapToArr( articles.map(article => ({
+            label: article.title,
+            value: article.id
+        })) );
 		return(
 			<Select
 			  name="article-filter"
