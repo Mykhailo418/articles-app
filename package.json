@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "webpack"
+    "build": "webpack",
+    "api" : "node simple_api/server.js"
   },
   "author": "",
   "license": "ISC",

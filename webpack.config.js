@@ -23,6 +23,13 @@ module.exports = {
  		}),
  	],
 
+ 	devServer: {
+ 		proxy: [{
+ 			path: '/api/',
+ 			target: 'http://localhost:3001'
+ 		}]
+ 	},
+
 	module : {
 		loaders: [{
 			test: /\.js$/,
