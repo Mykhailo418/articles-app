@@ -16,10 +16,15 @@ class SelectField extends Component{
 
 	render(){
 		const {articles,selected} = this.props;
-		let options = mapToArr( articles.map(article => ({
-            label: article.title,
-            value: article.id
-        })) );
+		let options = [];
+		if(articles){
+			//console.log('SelectField - arcticles',articles);
+			options = mapToArr( articles.map(article => ({
+	            label: article.title,
+	            value: article.id
+	        })) );
+	       
+	    }
 		return(
 			<Select
 			  name="article-filter"
@@ -39,7 +44,7 @@ class SelectField extends Component{
 
 function stroeStatetoProps(storeState){
 	return {
-		articles: storeState.articles
+		articles: storeState.articles.entities
 	}
 }
 

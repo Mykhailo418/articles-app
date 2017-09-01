@@ -1,7 +1,7 @@
 import {normalizedArticles as defaultArticles} from '../fixtures';
-import {DELETE_ART,ADD_COMMENT} from '../constants.js';
+import {DELETE_ART,ADD_COMMENT,GET_ALL_ARTICLES,SUCCESS,START} from '../constants.js';
 import {sortArrayToId} from '../utils.js';
-import {Record} from 'immutable';
+import {Record, OrderedMap} from 'immutable';
 
 const ArticleRecord = Record({
 	"id": null,
@@ -11,13 +11,19 @@ const ArticleRecord = Record({
     "comments": [] 
 });
 
-export default (articles = sortArrayToId(defaultArticles,ArticleRecord), action) => {
+const DefaultReducerState = Record({
+	entities: new OrderedMap,
+	loading: false,
+	loaded: false
+});
+
+export default (articles = new DefaultReducerState(), action) => {
 	let {type,payload} = action;
 
 	switch(type){
 		case DELETE_ART:
-			console.log('delete articles',articles.get(payload.id));
-			return articles.delete(payload.id);
+			console.log('delete articles',payload.id,articles,articles.get(payload.id));
+			return articles.deleteIn(['entities',payload.id]);
 		break;
 		case ADD_COMMENT:
 			let {random_id} = action;
@@ -32,6 +38,16 @@ export default (articles = sortArrayToId(defaultArticles,ArticleRecord), action)
 					comments: (articles[articleId].comments || []).concat(random_id)
 				}
 			}*/
+		break;
+		case GET_ALL_ARTICLES + START:
+			return articles.set('loading',true);
+		break;
+		case GET_ALL_ARTICLES + SUCCESS:
+			const {response} = action;
+			return articles
+				.set('entities',sortArrayToId(response,ArticleRecord))
+				.set('loading',false)
+				.set('loaded',true);
 		break;
 	}
 	return articles;

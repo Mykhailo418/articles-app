@@ -1,4 +1,4 @@
-import {INCREMENT,ADD_FILTETRS,DELETE_ART,RUN_LOGGER,ADD_COMMENT} from '../constants.js';
+import {INCREMENT,ADD_FILTETRS,DELETE_ART,RUN_LOGGER,ADD_COMMENT,GET_ALL_ARTICLES,GET_ARTICLE} from '../constants.js';
 
 export function increment(){
 	const action = {
@@ -46,4 +46,19 @@ export function add_comment(comment,articleId){
 		random_id: true	
 	};
 	return action;
+}
+
+export function get_all_articles(obj){
+	const action = {
+		type: GET_ALL_ARTICLES,
+		callAPI: 'http://localhost:3001/api/article'
+	};
+	return action;
+}
+
+export function get_article(obj){
+	const action = {
+		type: GET_ARTICLE
+	};
+	return action
 }

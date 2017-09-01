@@ -2,6 +2,7 @@ import {createStore,applyMiddleware,compose} from 'redux';
 import reducers from '../reducers/index';
 import logger from '../middlewares/logger';
 import generate_id from '../middlewares/generate_id';
+import api from '../middlewares/api';
 
 // --- START -  Dev Tools Script
 const composeEnhancers =
@@ -12,7 +13,7 @@ const composeEnhancers =
     }) : compose;
 
 const enhancer = composeEnhancers(
-  applyMiddleware(logger,generate_id),
+  applyMiddleware(generate_id,api,logger),
   // other store enhancers if any
 );
 

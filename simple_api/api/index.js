@@ -2,6 +2,8 @@ var router = require('express').Router();
 var mocks = require('./mock');
 var assign = require('object-assign');
 
+var server_timeout = 1500;
+
 router.get('/article', function (req, res, next) {
     var articles = mocks.articles.map(function (article) {
             return assign({}, article, {
@@ -10,17 +12,26 @@ router.get('/article', function (req, res, next) {
         }),
         limit = Number(req.query.limit) || articles.length,
         offset = Number(req.query.offset) || 0;
-
-    res.json(articles.slice(offset, limit + offset))
+    res.header('Access-Control-Allow-Origin','*');
+    //res.header('Access-Control-Allow-Headers','X-Requested-With');
+    setTimeout(function(){
+        res.json(articles.slice(offset, limit + offset));
+    },server_timeout);
 });
 
 router.get('/article/:id', function (req, res, next) {
     var article = mocks.articles.filter(function (article) {
         return article.id == req.params.id
     })[0];
-    if (article) return res.json(article);
+    res.header('Access-Control-Allow-Origin','*');
 
-    res.status(404).json({error: "not found"});
+    if(article){
+        setTimeout(function(){
+            return res.json(article);
+        },server_timeout);
+    }else{
+        res.status(404).json({error: "not found"});
+    }
 });
 
 router.post('/article', function (req, res, next) {
@@ -32,6 +43,7 @@ router.post('/article', function (req, res, next) {
         date: new Date()
     };
     mocks.articles.push(article);
+
     res.json(article)
 });
 
@@ -50,10 +62,13 @@ router.get('/comment', function (req, res, next) {
 
     var limit = Number(req.query.limit) || mocks.comments.length,
         offset = Number(req.query.offset) || 0;
-    res.json({
-        total: mocks.comments.length,
-        records: mocks.comments.slice(offset, limit + offset)
-    })
+    res.header('Access-Control-Allow-Origin','*');
+    setTimeout(function(){
+        res.json({
+            total: mocks.comments.length,
+            records: mocks.comments.slice(offset, limit + offset)
+        });
+    },server_timeout);
 });
 
 router.post('/comment', function (req, res, next) {

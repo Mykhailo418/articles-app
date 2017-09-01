@@ -29,7 +29,7 @@ class Article extends Component{
 
 	render(){
 		let {article,toggleOpen,isOpen} = this.props;
-		console.log('Article - render');
+		//console.log('Article - render');
 		return(
 			<div>
 				<h3 onClick={toggleOpen} className="arcticle-title">{article.title}</h3>
@@ -48,7 +48,7 @@ class Article extends Component{
 
 	showComments(){
 		let {id} = this.props.article;
-		console.log('Article - showComments',this.props.article.comments);
+		//console.log('Article - showComments',this.props.article.comments);
 		return this.props.isOpen && <CommentList articleId={id} comments={this.props.article.comments} />;
 	}
 

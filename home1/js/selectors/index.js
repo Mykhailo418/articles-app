@@ -1,6 +1,6 @@
 import {createSelector} from 'reselect';
 
-export const articlesGetter = state => state.articles;
+export const articlesGetter = state => state.articles.entities;
 export const filtersGetter = state => state.filters;
 export const commentsGetter = state => state.comments;
 export const idGetter = (state,props) => props.id;
@@ -41,7 +41,7 @@ export const filtratedArticlesSelector = createSelector(articlesGetter, filtersG
 });
 
 export const commentsSelectorFactory = () => createSelector(commentsGetter, idGetter, (comments,id) => {
-	console.log('-- Comments Selector Factory');
+	//console.log('-- Comments Selector Factory');
 	if(id || id == 0){
 		return comments.get(id);
 	}else{
