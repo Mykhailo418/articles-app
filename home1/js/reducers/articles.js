@@ -1,5 +1,5 @@
 import {normalizedArticles as defaultArticles} from '../fixtures';
-import {DELETE_ART,ADD_COMMENT,GET_ALL_ARTICLES,SUCCESS,START} from '../constants.js';
+import {DELETE_ART,ADD_COMMENT,GET_ALL_ARTICLES,SUCCESS,START,GET_ARTICLE,GET_COMMENT} from '../constants.js';
 import {sortArrayToId} from '../utils.js';
 import {Record, OrderedMap} from 'immutable';
 
@@ -8,7 +8,11 @@ const ArticleRecord = Record({
     "date": null,
     "title": '',
     "text": '',
-    "comments": [] 
+    "comments": [],
+    "loading": false,
+    "loaded": false,
+    "commentsLoading": false,
+    "commentsLoaded": false
 });
 
 const DefaultReducerState = Record({
@@ -18,7 +22,10 @@ const DefaultReducerState = Record({
 });
 
 export default (articles = new DefaultReducerState(), action) => {
-	let {type,payload} = action;
+	const {type,payload,response,error} = action;
+	if(payload){
+		var {articleId} = payload;
+	}
 
 	switch(type){
 		case DELETE_ART:
@@ -27,8 +34,8 @@ export default (articles = new DefaultReducerState(), action) => {
 		break;
 		case ADD_COMMENT:
 			let {random_id} = action;
-			let {articleId} = payload;
-			return articles.updateIn([articleId,'comments'], (comments) =>{
+			console.log('add comment',articles.entities);
+			return articles.updateIn(['entities',articleId,'comments'], (comments) =>{
 				return comments.concat(random_id);
 			});
 			/*return {
@@ -43,11 +50,29 @@ export default (articles = new DefaultReducerState(), action) => {
 			return articles.set('loading',true);
 		break;
 		case GET_ALL_ARTICLES + SUCCESS:
-			const {response} = action;
 			return articles
 				.set('entities',sortArrayToId(response,ArticleRecord))
 				.set('loading',false)
 				.set('loaded',true);
+		break;
+		case GET_ARTICLE + START:
+			console.log('get article start',articleId);
+			return articles.setIn(['entities',articleId,'loading'],true);
+		break;
+		case GET_ARTICLE + SUCCESS:
+			return articles
+				.setIn(['entities',articleId],new ArticleRecord(response))
+				.setIn(['entities',articleId,'loaded'],true);
+		break;
+		case GET_COMMENT + START:
+			console.log('comments loading START',articleId);
+			return articles.setIn(['entities',articleId,'commentsLoading'],true);
+		break;
+		case GET_COMMENT + SUCCESS:
+		console.log('reducer - get comment - success',articleId)
+			return articles
+				.setIn(['entities',articleId,'commentsLoading'],false)
+				.setIn(['entities',articleId,'commentsLoaded'],true);
 		break;
 	}
 	return articles;

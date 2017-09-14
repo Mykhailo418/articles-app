@@ -1,4 +1,4 @@
-import {INCREMENT,ADD_FILTETRS,DELETE_ART,RUN_LOGGER,ADD_COMMENT,GET_ALL_ARTICLES,GET_ARTICLE} from '../constants.js';
+import {INCREMENT,ADD_FILTETRS,DELETE_ART,RUN_LOGGER,ADD_COMMENT,GET_ALL_ARTICLES,GET_ARTICLE,GET_ALL_COMMENTS,START,ERROR,SUCCESS,GET_COMMENT} from '../constants.js';
 
 export function increment(){
 	const action = {
@@ -43,12 +43,13 @@ export function add_comment(comment,articleId){
 			comment,
 			articleId
 		},
-		random_id: true	
+		random_id: true,
+		run_logger: true
 	};
 	return action;
 }
 
-export function get_all_articles(obj){
+export function get_all_articles(){
 	const action = {
 		type: GET_ALL_ARTICLES,
 		callAPI: 'http://localhost:3001/api/article'
@@ -56,9 +57,49 @@ export function get_all_articles(obj){
 	return action;
 }
 
-export function get_article(obj){
+export function get_article(id){
+	return (dispatch, getState) => {
+		dispatch({
+			type: GET_ARTICLE + START,
+			payload: {
+				articleId: id
+			}
+		});
+
+		fetch('http://localhost:3001/api/article/'+id,{
+			mode: 'cors',
+			method: 'GET'
+		}).then((res) => {
+			return res.json();
+		}).then((res) => {
+			console.log('success',res);
+			dispatch({
+				type: GET_ARTICLE + SUCCESS,
+				payload: {
+					articleId: id,
+				},
+				response: res
+			});
+		}).catch((error)=>{
+			console.log('error',error);
+			next({
+				type: GET_ARTICLE + ERROR,
+				payload: {
+					articleId: id,
+				},
+				error: error
+			});
+		});
+	}
+}
+
+export function get_comment(id){
 	const action = {
-		type: GET_ARTICLE
+		type: GET_COMMENT,
+		callAPI: 'http://localhost:3001/api/comment?article='+id,
+		payload: {
+			articleId: id,
+		}
 	};
-	return action
+	return action;
 }

@@ -18,7 +18,7 @@ export default store => next => action => {
 	}).then((res)=>{
 		return res.json();
 	}).then((res)=>{
-		console.log(res);
+		console.log('success',res);
 		next({
 			...rest,
 			type: type + SUCCESS,

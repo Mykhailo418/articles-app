@@ -2,7 +2,8 @@ import React, {Component} from 'react';
 import CommentList from './CommentList';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {delete_article} from '../AC/index';
+import {delete_article,get_article} from '../AC/index';
+import Loading from './Loading';
 
 class Article extends Component{
 	constructor(){
@@ -13,43 +14,69 @@ class Article extends Component{
 		'article': PropTypes.shape({
 			'title': PropTypes.string.isRequired,
 			'text': PropTypes.string,
-			'comments': PropTypes.array
+			'comments': PropTypes.array,
+			'comments_loading': PropTypes.bool
 		}).isRequired,
 		toggleOpen: PropTypes.func.isRequired,
 		isOpen: PropTypes.bool.isRequired,
 	}
 
 	shouldComponentUpdate(nextProps,NextState){
-		return nextProps.isOpen != this.props.isOpen || nextProps.article.comments != this.props.article.comments;
+		console.log('--shouldComponentUpdate - Article - loading', nextProps.article.comments_loading,this.props.article.comments_loading);
+		return nextProps.isOpen != this.props.isOpen || 
+		nextProps.article.comments != this.props.article.comments ||
+		nextProps.article != this.props.article;
 	}
 
-	componentDidUpdate(){
-		//console.log('Did update '+this.props.article.title);
+	componentWillReceiveProps({isOpen,article,get_article}){
+		if(article.loading){
+			console.log('componentWillReceiveProps article'+article);
+		}
+		if(isOpen && !this.props.isOpen && !article.loading && !article.loaded && get_article){
+			get_article(article.id);
+		}
 	}
 
 	render(){
 		let {article,toggleOpen,isOpen} = this.props;
-		//console.log('Article - render');
+		console.log('Article - render');
 		return(
 			<div>
 				<h3 onClick={toggleOpen} className="arcticle-title">{article.title}</h3>
 				<button onClick={this.deleteArticle} className="btn-delete">Remove</button>
-				<div>
-					{this.showText(isOpen)}
-				</div>
-				{this.showComments()}
+				{this.get_body(isOpen,article)}
 			</div>
 		);
 	}
 
-	showText(isOpen){
-		return isOpen && <p>{this.props.article.text}</p>;
+	get_body(isOpen,article){
+		console.log('loading article body',article.loading);
+		if(!isOpen){
+			return null;
+		}
+		if(article.loading){
+			return <Loading />;
+		}
+		if(article.loaded){
+			return (
+				<div>
+					{this.showText(isOpen,article)}
+					{this.showComments(article)}
+				</div>
+			);
+		}else{
+			return null;
+		}
 	}
 
-	showComments(){
-		let {id} = this.props.article;
-		//console.log('Article - showComments',this.props.article.comments);
-		return this.props.isOpen && <CommentList articleId={id} comments={this.props.article.comments} />;
+	showText(isOpen,article){
+		return isOpen && article.text && <p>{article.text}</p>;
+	}
+
+	showComments(article){
+		const {id,commentsLoading} = article;
+		console.log('Article - showComments');
+		return this.props.isOpen && <CommentList comments={article.comments} article={article} articleId={id} />;
 	}
 
 	deleteArticle = e =>{
@@ -64,4 +91,4 @@ class Article extends Component{
 }
 
 
-export default connect(null,{delete_article})(Article);
+export default connect(null,{delete_article,get_article})(Article);

@@ -49,26 +49,33 @@ router.post('/article', function (req, res, next) {
 
 router.get('/comment', function (req, res, next) {
     var aid = req.query.article;
+    
     if (aid) {
         var article = mocks.articles.find(function(article) {
             return article.id == aid
-        })
-        return res.json((article.comments || []).map(function(id) {
-            return mocks.comments.find(function(comment) {
-                return comment.id == id
-            })
-        }))
-    }
-
-    var limit = Number(req.query.limit) || mocks.comments.length,
-        offset = Number(req.query.offset) || 0;
-    res.header('Access-Control-Allow-Origin','*');
-    setTimeout(function(){
-        res.json({
-            total: mocks.comments.length,
-            records: mocks.comments.slice(offset, limit + offset)
         });
-    },server_timeout);
+        setTimeout(function(){
+            res.header('Access-Control-Allow-Origin','*');
+            return res.json((article.comments || []).map(function(id) {
+                return mocks.comments.find(function(comment) {
+                    return comment.id == id
+                })
+            }));
+
+        },server_timeout);
+    }else{
+
+        var limit = Number(req.query.limit) || mocks.comments.length,
+            offset = Number(req.query.offset) || 0;
+        
+        setTimeout(function(){
+            res.header('Access-Control-Allow-Origin','*');
+            res.json({
+                total: mocks.comments.length,
+                records: mocks.comments.slice(offset, limit + offset)
+            });
+        },server_timeout);
+    }
 });
 
 router.post('/comment', function (req, res, next) {

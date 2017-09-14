@@ -9,3 +9,5 @@ export const SUCCESS = '_success';
 export const ERROR = '_error';
 export const START = '_start';
 export const GET_ARTICLE = 'get_article';
+export const GET_ALL_COMMENTS = 'get_all_comments';
+export const GET_COMMENT = 'get_comment';
